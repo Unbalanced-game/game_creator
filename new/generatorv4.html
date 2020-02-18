@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <label>Image File:</label>
+        <br/>
+        <input type="file" id="imageLoader" name="imageLoader"/>
+        
+        <canvas id="imageCanvas">
+            Your browser does not support the canvas element.
+        </canvas>
+        
+        <script>
+            var imageLoader = document.getElementById('imageLoader');
+                imageLoader.addEventListener('change', handleImage, false);
+            var canvas = document.getElementById('imageCanvas');
+            var ctx = canvas.getContext('2d');
+
+            function handleImage(e){
+                var reader = new FileReader();
+                reader.onload = function(event){
+                    var img = new Image();
+                    img.onload = function(){
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx.drawImage(img,0,0);
+                        
+                        ctx.font = "30px Arial";
+                        ctx.fillText("Hello World",10,50);
+                        
+                        ctx.font = "30px Arial";
+                        ctx.fillText("Hello World",10,50);
+                    }
+                    img.src = event.target.result;
+                }
+                reader.readAsDataURL(e.target.files[0]);     
+            }
+
+        </script>
+	</body>
+</html>
