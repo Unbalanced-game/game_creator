@@ -1,14 +1,41 @@
 <!DOCTYPE html>
-<html>
-    <body>
-        <label>Image File:</label>
-        <br/>
-        <input type="file" id="imageLoader" name="imageLoader"/>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Get Text Input Field Value in JavaScript</title>
+    </head>
+    <body>      
+        <div>
+            <input type="text" name="Karten Name" id="cardName"><br>
+            <input type="text" name="Karten Beschreibung" id="cardDes"><br>
+        </div>
         
+        <div>
+            <input type="radio" name="type" value="action"> Aktions Karte (Blau)<br>
+            <input type="radio" name="type" value="counter"> Konter Karte (Grün)<br> 
+            <input type="radio" name="type" value="instant"> Sofort Karte (Rot)<br>
+            <input type="radio" name="type" value="field"> Feld Karte (Gold)<br>
+            <input type="radio" name="type" value="blank"> Blank Karte (Grau)<br>
+        </div>
+        
+        <div>
+            <label>Image File:</label><br>
+            <input type="file" id="imageLoader" name="imageLoader"/><br>
+        </div>
+    
         <canvas id="imageCanvas">
             Your browser does not support the canvas element.
         </canvas>
-        
+    
+        <!--<button type="button" onclick="drawCanvas();">Get Value</button>-->
+
+        <img id="action" src="/media/jannis/NIKO R/Unbalanced/unbalanced-assets/assets/karten/assets/blau.png" style="display:none"/>
+        <img id="field" src="/media/jannis/NIKO R/Unbalanced/unbalanced-assets/assets/karten/assets/gelb.png" style="display:none"/>
+        <img id="counter" src="/media/jannis/NIKO R/Unbalanced/unbalanced-assets/assets/karten/assets/gruen.png" style="display:none"/>
+        <img id="instant" src="/media/jannis/NIKO R/Unbalanced/unbalanced-assets/assets/karten/assets/rot.png" style="display:none"/>
+        <img id="blank" src="/media/jannis/NIKO R/Unbalanced/unbalanced-assets/assets/karten/assets/shwarzweiss.png" style="display:none"/>      
+    
+    
         <script>
             var imageLoader = document.getElementById('imageLoader');
                 imageLoader.addEventListener('change', handleImage, false);
@@ -20,19 +47,34 @@
                 reader.onload = function(event){
                     var img = new Image();
                     img.onload = function(){
-                        canvas.width = img.width;
-                        canvas.height = img.height;
-                        ctx.drawImage(img,0,0);
-                        
-                        ctx.font = "30px Arial";
-                        ctx.fillText("Hello World",10,50);
-                        
-                        ctx.font = "30px Arial";
-                        ctx.fillText("Hello World",10,50);
+                        drawCanvas(img);
                     }
                     img.src = event.target.result;
                 }
                 reader.readAsDataURL(e.target.files[0]);     
+            }
+            
+            function drawCanvas(image){               
+                var name = document.getElementById("cardName").value;
+                var description = document.getElementById("cardDes").value
+                const background = document.querySelector('input[name="type"]:checked').value;
+                                    
+                
+                let backgroundimage = new Image();
+                
+                backgroundimage.onload = function () {
+                    canvas.width = backgroundimage.width;
+                    canvas.height = backgroundimage.height;
+                    ctx.drawImage(backgroundimage, 0, 0);
+                    
+                    ctx.drawImage(image, 10, 200);
+                    
+                    ctx.font = "30px Arial";
+                    ctx.fillText(name,(backgroundimage.width/2)-75,110);
+                    ctx.font = "30px Arial";
+                    ctx.fillText(description,75,715);
+                };
+                backgroundimage.src = document.getElementById(background).src;
             }
 
         </script>
